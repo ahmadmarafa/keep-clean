@@ -5,7 +5,7 @@ console.log("Keep Clean extension content script loaded");
 // Wait for DOM to be ready
 if (document.readyState === 'loading') {
     document.documentElement.style.visibility = 'hidden';
-    checkContent();
+    
     document.addEventListener('DOMContentLoaded', checkContent);
 } else {
     checkContent();
