@@ -1,0 +1,166 @@
+# Keep Clean - Chrome Extension
+
+> ⚠️ **This project is currently in active development** ⚠️
+
+A Chrome extension designed to block inappropriate content and provide a safer browsing experience by filtering adult content before it loads.
+
+## 🚧 Development Status
+
+This extension is **currently under development** and may contain bugs or incomplete features. We are actively working on improving stability, detection accuracy, and user experience.
+
+### What's Working
+- ✅ Basic URL-based content blocking
+- ✅ Custom blocked links functionality
+- ✅ Immediate content blocking (no content exposure)
+- ✅ Settings page for customization
+- ✅ Multiple blocking methods (redirect/message)
+
+### What's In Progress
+- 🔧 Improved content detection algorithms
+- 🔧 Performance optimizations
+- 🔧 Better false positive handling
+- 🔧 Enhanced user interface
+- 🔧 Additional blocking categories
+
+## 🛡️ Features
+
+### Instant Protection
+- **Zero Exposure Blocking**: Content is blocked immediately before anything loads on the page
+- **Multi-Layer Detection**: 
+  - Quick URL pattern matching
+  - Custom blocked links
+  - Content-based analysis
+  - Known adult site database
+
+### Customizable Blocking Methods
+- **Redirect Mode**: Automatically redirect to a safe page (default: Google)
+- **Message Mode**: Display a blocking message with navigation options
+
+### User Control
+- Add custom websites to block list
+- Wildcard pattern support (`*.example.com`)
+- Easy-to-use settings interface
+- Quick access to settings from blocked pages
+
+### Smart Detection
+- Domain-based filtering
+- Content analysis
+- Age-restricted content detection
+- Adult keyword detection
+
+## 📥 Installation
+
+### From Source (Development)
+1. Download or clone this repository
+2. Open Chrome and navigate to `chrome://extensions/`
+3. Enable "Developer mode" in the top right
+4. Click "Load unpacked" and select the extension folder
+5. The extension will be installed and ready to use
+
+### File Structure
+```
+keep-clean-extension/
+├── manifest.json              # Extension configuration
+├── options.html              # Settings page
+├── background.html           # Background page (legacy)
+├── js/
+│   ├── background.js         # Service worker
+│   ├── noporn.js            # Main content blocking script
+│   ├── tests.js             # Content detection functions
+│   └── instant-block.css    # Immediate blocking styles
+├── style.css                # General styles
+├── jsToast.css             # Toast notification styles
+├── inspiration.txt         # Motivational quotes
+└── README.md               # This file
+```
+
+## ⚙️ Configuration
+
+### Accessing Settings
+1. Right-click the extension icon
+2. Select "Options"
+3. Or click "Settings" from any blocked page
+
+### Blocking Methods
+- **Redirect to Safe Page**: Automatically redirects blocked content to a specified URL
+- **Show Blocking Message**: Displays a customizable blocking message
+
+### Custom Blocked Links
+Add specific websites or URL patterns to your block list:
+```
+https://example.com
+*.badsite.com
+reddit.com/r/nsfw
+```
+
+## 🔧 Technical Details
+
+### Manifest V3 Compatibility
+This extension is built using Manifest V3 for future compatibility and enhanced security.
+
+### Immediate Blocking Architecture
+- Content scripts run at `document_start`
+- CSS is injected immediately to hide content
+- Multi-stage detection process ensures fast blocking
+- Progressive enhancement allows legitimate content to load
+
+### Detection Methods
+1. **Quick URL Check**: Fast pattern matching on domains and URLs
+2. **Custom Blocks**: User-defined blocked links with wildcard support
+3. **Content Analysis**: Deep page analysis for adult content indicators
+4. **Dynamic Monitoring**: Continuous monitoring for content changes
+
+## 🐛 Known Issues
+
+- Some websites may experience brief loading delays during content analysis
+- False positives may occur on legitimate websites with adult-related keywords
+- Settings may take a moment to sync across devices
+
+## 🤝 Contributing
+
+This project is in active development. Contributions, bug reports, and feature requests are welcome!
+
+### Development Setup
+1. Clone the repository
+2. Make your changes
+3. Test in Chrome's developer mode
+4. Submit a pull request
+
+### Reporting Issues
+Please report bugs or issues with:
+- Chrome version
+- Website where the issue occurred
+- Expected vs actual behavior
+- Console errors (if any)
+
+## 📝 License
+
+This project is currently in development. License information will be updated soon.
+
+## ⚠️ Disclaimer
+
+This extension is designed to help create a safer browsing experience but may not catch all inappropriate content. It should be used as part of a comprehensive approach to internet safety. The developers are not responsible for any content that may not be blocked.
+
+## 🔮 Roadmap
+
+### Short Term
+- [ ] Improve detection accuracy
+- [ ] Add whitelist functionality
+- [ ] Enhanced error handling
+- [ ] Performance optimizations
+
+### Medium Term
+- [ ] Multiple language support
+- [ ] Cloud-based blocklist updates
+- [ ] Parental control features
+- [ ] Usage statistics and reporting
+
+### Long Term
+- [ ] AI-powered content detection
+- [ ] Browser sync across devices
+- [ ] Mobile browser support
+- [ ] Enterprise management features
+
+---
+
+**Remember**: This extension is actively being developed. Please check back regularly for updates and improvements!

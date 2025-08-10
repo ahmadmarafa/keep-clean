@@ -1,0 +1,20 @@
+.jsToast
+{
+	padding:10px 20px;
+	border-radius: 20px;
+	background: rgba(0,0,0,0.9) ;
+	position: fixed;
+	bottom:10%;
+	left:50%;
+	transform: translateX(-50%);
+	font-size:15px;
+	color:white;
+	opacity: 1;
+	transition: opacity 1s ease ;
+	z-index: 99999998;
+	border:1px solid white; 
+}
+.jsToast-deactive
+{
+	opacity: 0;
+}

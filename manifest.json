@@ -1,0 +1,33 @@
+{
+    "manifest_version": 3,
+    "version": "1.0",
+    "name": "Keep Clean",
+    "description": "Content blocker extension to filter inappropriate content",
+    "permissions": [
+        "storage",
+        "tabs",
+        "notifications",
+        "idle",
+        "activeTab"
+    ],
+    "options_page": "options.html",
+    "background": {
+        "service_worker": "js/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": [
+                "js/tests.js",
+                "js/noporn.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["js/jsToast.css"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Blocker Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            min-width: 600px;
+            width: 60%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 3px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #898e92;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        input[type="url"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="url"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .section {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .save-btn {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #219a52;
+        }
+
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .blocked-links-section textarea {
+            min-height: 120px;
+        }
+
+        h2 {
+            color: #313131;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Keep clean settings</h1>
+            <p>Configure your content blocking preferences</p>
+        </div>
+
+        <div class="content">
+            <h2> Blocking method </h2>
+            <div class="form-group">
+                <select id="blockingMethod">
+                    <option value="redirect">Redirect to Safe Page</option>
+                    <option value="message">Show Blocking Message</option>
+                </select>
+                <div class="description">Choose how blocked content should be handled</div>
+            </div>
+
+            <div id="redirectSection" class="section">
+                <div class="form-group">
+                    <label for="redirectUrl">Redirect URL:</label>
+                    <input type="url" id="redirectUrl" placeholder="https://www.google.com">
+                    <div class="description">URL where blocked content will redirect to</div>
+                </div>
+            </div>
+            <div id="messageSection" class="section hidden">
+                <div class="form-group">
+                    <label for="customMessage">Custom Blocking Message:</label>
+                    <textarea id="customMessage"
+                        placeholder="This content has been blocked by your safety filter."></textarea>
+                    <div class="description">Message displayed when content is blocked</div>
+                </div>
+            </div>
+            <h2> Block also </h2>
+            <div class="section blocked-links-section">
+                <h3>Additional Blocked Links</h3>
+                <div class="form-group">
+                    <textarea id="blockedLinks"
+                        placeholder="https://example.com&#10;*.badsite.com&#10;reddit.com/r/nsfw"></textarea>
+                    <div class="description">
+                        Add specific websites or URL patterns to block. Supports wildcards (*).
+                        Each URL should be on a separate line.
+                    </div>
+                </div>
+            </div>
+
+            <button class="save-btn" id="saveBtn">Save Settings</button>
+            <div class="status-message" id="statusMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load settings when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            loadSettings();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Blocking method dropdown change
+            document.getElementById('blockingMethod').addEventListener('change', function () {
+                toggleSections(this.value);
+            });
+
+            // Save button
+            document.getElementById('saveBtn').addEventListener('click', saveSettings);
+        }
+
+        function toggleSections(method) {
+            const redirectSection = document.getElementById('redirectSection');
+            const messageSection = document.getElementById('messageSection');
+
+            if (method === 'redirect') {
+                redirectSection.classList.remove('hidden');
+                messageSection.classList.add('hidden');
+            } else {
+                redirectSection.classList.add('hidden');
+                messageSection.classList.remove('hidden');
+            }
+        }
+
+        function loadSettings() {
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.sync.get([
+                    'blockingMethod',
+                    'redirectUrl',
+                    'customMessage',
+                    'blockedLinks'
+                ], function (result) {
+                    // Set blocking method
+                    const method = result.blockingMethod || 'redirect';
+                    document.getElementById('blockingMethod').value = method;
+                    toggleSections(method);
+
+                    // Set redirect URL
+                    document.getElementById('redirectUrl').value =
+                        result.redirectUrl || 'https://www.google.com';
+
+                    // Set custom message
+                    document.getElementById('customMessage').value =
+                        result.customMessage || 'This content has been blocked by your safety filter.';
+
+                    // Load blocked links
+                    const blockedLinks = result.blockedLinks || [];
+                    document.getElementById('blockedLinks').value = blockedLinks.join('\n');
+                });
+            } else {
+                // Fallback for testing outside extension
+                console.log('Chrome extension API not available - using defaults');
+                document.getElementById('redirectUrl').value = 'https://www.google.com';
+                document.getElementById('customMessage').value = 'This content has been blocked by your safety filter.';
+                toggleSections('redirect');
+            }
+        }
+
+        function saveSettings() {
+            // Get blocked links from textarea and convert to array
+            const blockedLinksText = document.getElementById('blockedLinks').value;
+            const blockedLinksArray = blockedLinksText
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            const settings = {
+                blockingMethod: document.getElementById('blockingMethod').value,
+                redirectUrl: document.getElementById('redirectUrl').value || 'https://www.google.com',
+                customMessage: document.getElementById('customMessage').value || 'This content has been blocked by your safety filter.',
+                blockedLinks: blockedLinksArray
+            };
+
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.sync.set(settings, function () {
+                    if (chrome.runtime.lastError) {
+                        showStatus('Error saving settings: ' + chrome.runtime.lastError.message, 'error');
+                    } else {
+                        showStatus('Settings saved successfully!', 'success');
+                    }
+                });
+            } else {
+                // Fallback for testing
+                console.log('Settings would be saved:', settings);
+                showStatus('Settings saved successfully! (Demo mode)', 'success');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,369 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:300,100,400);
+@import url(http://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css);
+@import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+
+html, body {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+}
+a img {
+    border: 0px;
+}
+body {
+    
+            font-family:"Lato" , "Droid Arabic Naskh" , arial ,"traditional arabic";
+        font-size: 15px;
+
+    text-align: center;
+      color: #484848 ;
+        background: #F4F4F4 ;
+}
+div.container
+{
+    width:600px;
+    margin:0px auto ;
+}
+.header
+{
+    width:100%;
+    height:75px;
+    background:#ffffff ;
+    /*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1);*/
+        box-shadow: 0px -2px 19px 0px rgba(50, 50, 50, 0.125);
+   
+    z-index: 15 ;
+    float:right;
+    clear:both;
+    display: inline-block;
+}
+
+.header label
+{
+    text-align:center;
+    height:75px;
+    line-height: 75px;
+    vertical-align: middle;
+    font-size:3em;
+    color:#0079CE;
+}
+.header .button
+{
+    height:75px;
+    line-height: 75px;
+    vertical-align: middle;
+    font-size:3em;
+    color:#0079CE;
+    text-decoration: none;
+}
+.loginbutton
+{
+    display: block;
+    width: 100%;
+    height: 64px;
+    background: #F00;
+    border-radius: 5px;
+    background-color: #0079CE;
+    border: none;
+    border-radius: 0px 3px 3px 0px;
+    -moz-border-radius: 0px 3px 3px 0px;
+    -webkit-border-radius: 0px 3px 3px 0px;
+    color: #F4F4F4;
+    cursor: pointer;
+    font-size: 1.3em;
+    text-decoration: none;
+    line-height: 64px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+    font-family:"Droid Arabic Kufi" ;
+}
+.before{
+    
+    
+    background-color: #0064AB;
+    border-radius: 3px 0px 0px 3px;
+    -moz-border-radius: 3px 0px 0px 3px;
+    -webkit-border-radius: 3px 0px 0px 3px;
+    color: #0079CE;
+    display: block;
+    float: left;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    width: 50px;
+    margin-left: -3px;
+    vertical-align: middle;
+
+}
+.button
+{
+      display: block;
+    width: 100%;
+    height: 64px;
+    background: ;
+    border-radius: 3px;
+    border: none;
+    border-radius: 3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius: 3px;
+    color: #0079CE;
+    cursor: pointer;
+    font-size: 1.3em;
+    text-decoration: none;
+    line-height: 64px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+  
+}
+.row
+{
+    height:auto;
+    float:left;
+    clear:both;
+    width:100%;
+    padding:.5%;
+}
+
+.half
+{
+    
+    width:49.5%;
+    margin-left:.25%;
+}
+.fullSize
+{
+    width:100%;
+}
+.right
+{
+    float:right;
+}
+.left
+{
+    float:left;
+}
+.textRight
+{
+    text-align:right;
+}
+.textLeft
+{
+    text-align:left;
+}
+label{
+    
+    height:24px;
+    margin-bottom:1px;
+    line-height:24px;
+    
+}
+.note
+{
+	color:red;
+}
+.input
+{
+    width:100%;
+    height:32px;
+    vertical-align: middle;
+    line-height:32px;
+    border-radius: 2px;
+    border:1px solid #e4e4e4 ;
+    padding:2px;
+
+}
+.textarea
+{ 
+    width:100%;
+    height:128px;
+    line-height:24px;
+    vertical-align: middle;
+    border-radius: 2px;
+    border:1px solid #e4e4e4 ; padding:2px;
+
+
+}
+.todo{
+    height:75px;
+    text-align: center;
+    direction: rtl;
+    font-family:"Lato" , "Droid Arabic Naskh" , arial ,"traditional arabic";
+    font-size: 15px;
+    
+    box-shadow: 0 1px 4px rgba(0,0,0,.03);
+    border: 1px solid rgba(0,0,0,.09);
+    border-radius: 3px;
+    
+    
+}
+.fbutton
+{
+    border-color: #DEDEDE #D8D8D8 #D3D3D3;
+    text-shadow: 0 1px 0 #FFF;
+    -webkit-box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #FBFBFB;
+    -moz-box-shadow: 0 1px 1px #eaeaea, inset 0 1px 0 #fbfbfb;
+    box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #FBFBFB;
+    background: #FFF;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF), color-stop(47%,#F6F6F6), color-stop(100%,#EDEDED));
+    background: -webkit-linear-gradient(top, #FFF 0%,#F6F6F6 47%,#EDEDED 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    background: linear-gradient(top, #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+    display: inline-block;
+    text-decoration: none;
+    padding: 3px 8px;
+    line-height: 20px;
+    color: #555;
+    text-transform: uppercase;
+    border: 1px solid #DEDEDE;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top:5px;
+}
+
+.title
+{
+    
+    font-size:1.4em;
+    color:#555;
+}
+
+.icon
+{
+	margin:2px;
+	font-size:100%;
+	font-family:FontAwesome ;
+    line-height:32px;
+    text-align: center;
+    font-style: normal;
+    
+}
+
+
+
+.rowContainer
+{
+	
+	width:90%;
+	margin:5%;
+}
+
+.colx2>*
+{
+    width:50%;
+    float:inherit;
+    padding:0.2%;
+}
+.colx3>*
+{
+    width:33.333333%;
+    float:inherit;
+}
+.colx4>*
+{
+    width:25%;
+    float:inherit;
+}
+.colx5>*
+{
+    width:20%;
+    float:inherit;
+}
+
+.element
+{
+    background-color: #FFF;
+    margin: 0 0 5px 0px;
+    background: #fff;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    padding: 10px 0px;
+    float: left;
+    width: 100%;
+    border-radius: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    max-height: 250px;
+    line-height:24px;
+    overflow:hidden;
+    position: relative;;
+}
+
+.element .text{
+    float:right;
+    width:85%;
+    color:#000;
+    direction: rtl;
+    position: relative;
+}
+.element[data-done="1"] .text:after{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 1px;
+  background: #0079CE;
+  content: "";
+  width: 100%;
+  display: block;
+}
+.element[data-done="1"]:after {
+    position: absolute;
+    left: 0;
+    top:0px;
+    height: 100%;
+    background: #0079CE;
+    content: attr(data-done-at);
+    width: 15%;
+}
+.element .buttons{
+    float:left;
+    width:15%;
+   
+    text-align: center;   
+}
+.element .buttons a
+{
+     color: #999999;
+    height: 24px;
+    line-height: 24px;
+    font-size:17px;
+    margin:0px 5px;
+}
+
+
+.jsToast
+{
+	padding:10px 20px;
+	border-radius: 20px;
+	background: rgba(0,0,0,0.9) ;
+	position: fixed;
+	bottom:10%;
+	left:50%;
+	transform: translateX(-50%);
+	font-size:15px;
+	color:white;
+	opacity: 1;
+	transition: opacity 1s ease ;
+}
+.jsToast-deactive
+{
+	opacity: 0;
+}
+
+
