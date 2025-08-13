@@ -1,9 +1,18 @@
 let isClean = () => {
-    return /\.org|\.edu|\.gov|(edx|saylor|Coursera|UoPeople|khanacademy|academicearth|wikipedia|rwaq|wiki[a-z]{3,7}|wikimedia)\.org|(Udemy|Skillfeed|imdb|google|facebook|apple|amazon|ebay|baidu|bbc|cnn|dw|alibaba|microsoft|msn|firefox|opera|Lynda|codeschool|Codeacademy|Treehouse|paypal|w3schools?|Laracast|FreeCodeCamp|tutsplus|jumia|souq|google|tutsplus|themeforest|codecanyon|videohive|audiojungle|graphicriver|photodune|3docean|activeden|envato|linkedin|whatsapp|medium|github|gitlab|rottentomatoes|upwork|fiver|bitbucket|coinmarketcap)\.com|(tsawq|researchgate)\.net|(ghost)\.io/.test(new URL(location.href).hostname.toLowerCase());
+    return /\.org|\.edu|\.gov|\.mil|\.ac\.[a-z]{2}|\.(sa|ae|om|bh|qa)|bank|\.aero|(edx|saylor|Coursera|UoPeople|khanacademy|academicearth|wikipedia|rwaq|wiki[a-z]{3,7}|wikimedia)\.org|(Udemy|Skillfeed|imdb|google|gmail|facebook|apple|amazon|ebay|baidu|bbc|cnn|dw|alibaba|microsoft|msn|firefox|opera|Lynda|codeschool|Codeacademy|Treehouse|paypal|w3schools?|Laracast|FreeCodeCamp|tutsplus|jumia|souq|google|tutsplus|themeforest|openai|chatgpt|codecanyon|videohive|audiojungle|graphicriver|photodune|3docean|activeden|envato|linkedin|whatsapp|medium|github|gitlab|rottentomatoes|upwork|fiver|bitbucket|coinmarketcap)\.com|(tsawq|researchgate)\.net|(ghost)\.io|(claude)\.ai/.test(new URL(location.href).hostname.toLowerCase());
 }
+
+
 
 let isYoutubeRestricted = () => {
     return /\"text\":\"Age-restricted video(.*[^\"])\"/.test(document.body.innerHTML);
+}
+
+let isRedditRestricted = async () => {
+    let subreddit = location.href.match(/reddit\.com\/r\/([^\/?#]+)/i);
+    const resp = await fetch(`https://www.reddit.com/r/${subreddit}/about.json`);
+    const data = await resp.json();
+    return data?.data?.over18 === true;
 }
 
 let isNsfw = () => {
@@ -18,6 +27,7 @@ let isNsfw = () => {
         }
     });
 
+    console.log(document.body.innerHTML);
     //check for tld porn tld ;
     if (/\.(?:porn|xxx|adult|sex|sexy|hot|cam|cams|escort|dating|love|nude|erotica?|fetish)$/i.test(new URL(location.href).hostname.toLowerCase())) {
         console.log("1")
@@ -30,8 +40,6 @@ let isNsfw = () => {
 
     //check for porn warning sign
     if (/\b(you)?(?:must|should|have)\s+(18\s*\+?|21|adult|eigteen)|only\s+for\s+adults|for\s+adults\s+only|restricted\s+to\s+adults\b/i.test(document.body.innerHTML)) {
-        
-        
         return true;
     }
 
@@ -40,11 +48,18 @@ let isNsfw = () => {
         return true;
     }
 
-    
+
+    if (/reddit.com/.test(location.href) && isRedditRestricted()) {
+        return true;
+    }
+
+
+    if (/reddit.com/.test(location.href) && isRedditRestricted()) {
+        return true;
+    }
+
 
     if (/youtube.com/.test(location.href) && isYoutubeRestricted()) {
-        console.log("5")
-
         return true;
     }
 

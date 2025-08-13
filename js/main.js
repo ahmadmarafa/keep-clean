@@ -3,37 +3,86 @@ console.log("Keep Clean extension content script loaded");
 
 
 // Wait for DOM to be ready
-if (document.readyState === 'loading') {
-    document.documentElement.style.visibility = 'hidden';
-    document.addEventListener('DOMContentLoaded', checkContent);
-} else {
-    checkContent();
+
+const setDomainStatus = async (domain, status) => {
+    try {
+        const result = await chrome.storage.local.get(['domains']);
+        const domains = result['domains'] || {};
+        domains[domain] = status;
+        await chrome.storage.local.set({ 'domains': domains });
+    } catch (error) {
+        return false;
+    }
+    return true;
+}
+
+const getDomainStatus = async (domain) => {
+    return new Promise((resolve) => {
+        chrome.storage.local.get(['domains'], (result) => {
+            resolve(result['domains'] !== undefined ? (result['domains'][domain] ?? 'new') : 'new');
+        });
+    });
+};
+
+
+
+if (document.contentType && document.contentType.includes("html")) {
+    getDomainStatus(new URL(location.href).hostname).then((domainStatus) => {
+            console.log(" >>>>>>>>>> " , domainStatus)
+
+        if (domainStatus == "new") {
+            if (document.readyState === 'loading') {
+                document.documentElement.dataset.keepCleanStage = 'loading';
+                const style = document.createElement("style");
+                style.textContent = `
+                html[data-keep-clean-stage='loading'] body {
+                    filter: blur(20px);
+                }
+                html[data-keep-clean-stage='dirty'] body {
+                    filter: blur(100px);
+                }
+                html[data-keep-clean-stage='clean'] body {
+                    filter: none;
+                }
+            `;
+                document.documentElement.appendChild(style);
+
+                window.addEventListener('load', () => setTimeout(() => checkContent(), 1000));
+            } else {
+                checkContent();
+            }
+        }
+
+        if (domainStatus == 'dirty') {
+            blockContent();
+        }
+    })
 }
 
 function checkContent() {
-    
+
     // Check if current site is clean or NSFW
     const isCleanSite = isClean();
     const isNsfwSite = isNsfw();
-    
-    console.log("Is clean:", isCleanSite, "Is NSFW:", isNsfwSite);
-    
+
     if (!isCleanSite && isNsfwSite) {
-        console.log("Blocking inappropriate content");
+        document.documentElement.dataset.keepCleanStage = 'dirty';
         blockContent();
+        setDomainStatus(new URL(location.href).hostname, 'dirty')
     } else {
-        document.documentElement.style.visibility = 'initial';
+        document.documentElement.dataset.keepCleanStage = 'clean';
+        setDomainStatus(new URL(location.href).hostname, 'clean')
     }
-    
+
     // // Also check user's custom blocked links
     checkCustomBlockedLinks();
 }
 
 function checkCustomBlockedLinks() {
-    chrome.storage.sync.get(['blockedLinks'], function(result) {
+    chrome.storage.sync.get(['blockedLinks'], function (result) {
         const blockedLinks = result.blockedLinks || [];
         const currentUrl = window.location.href;
-        
+
         for (const blockedPattern of blockedLinks) {
             if (isUrlMatched(currentUrl, blockedPattern)) {
                 console.log("URL matches blocked pattern:", blockedPattern);
@@ -51,7 +100,7 @@ function isUrlMatched(url, pattern) {
             .replace(/\./g, '\\.')
             .replace(/\*/g, '.*')
             .replace(/\?/g, '\\?');
-        
+
         const regex = new RegExp(regexPattern, 'i');
         return regex.test(url);
     } catch (e) {
@@ -62,11 +111,11 @@ function isUrlMatched(url, pattern) {
 
 function blockContent() {
     // Get user preference from chrome storage
-    chrome.storage.sync.get(['blockingMethod', 'redirectUrl', 'customMessage'], function(result) {
+    chrome.storage.sync.get(['blockingMethod', 'redirectUrl', 'customMessage'], function (result) {
         const method = result.blockingMethod || 'redirect';
         const redirectUrl = result.redirectUrl || 'https://www.google.com';
         const message = result.customMessage || 'This content has been blocked by your content filter.';
-        
+
         if (method === 'redirect') {
             // Redirect to predefined URL
             window.location.href = redirectUrl;
@@ -82,7 +131,7 @@ function displayBlockingMessage(message) {
     if (document.querySelector('.content-blocker-overlay')) {
         return;
     }
-    
+
     // Create blocking overlay
     const overlay = document.createElement('div');
     overlay.className = 'content-blocker-overlay';
@@ -99,7 +148,7 @@ function displayBlockingMessage(message) {
         z-index: 2147483647 !important;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     `;
-    
+
     // Create message container
     const messageContainer = document.createElement('div');
     messageContainer.style.cssText = `
@@ -111,7 +160,7 @@ function displayBlockingMessage(message) {
         max-width: 500px !important;
         margin: 20px !important;
     `;
-    
+
     // Create shield icon
     const icon = document.createElement('div');
     icon.innerHTML = '🛡️';
@@ -119,7 +168,7 @@ function displayBlockingMessage(message) {
         font-size: 48px !important;
         margin-bottom: 20px !important;
     `;
-    
+
     // Create message text
     const messageText = document.createElement('h2');
     messageText.textContent = message;
@@ -129,7 +178,7 @@ function displayBlockingMessage(message) {
         font-size: 24px !important;
         font-weight: 600 !important;
     `;
-    
+
     // Create subtitle
     const subtitle = document.createElement('p');
     subtitle.textContent = 'Content blocked by your safety filter';
@@ -138,7 +187,7 @@ function displayBlockingMessage(message) {
         margin: 0 0 30px 0 !important;
         font-size: 16px !important;
     `;
-    
+
     // Create back button
     const backButton = document.createElement('button');
     backButton.textContent = 'Go Back';
@@ -153,7 +202,7 @@ function displayBlockingMessage(message) {
         transition: background 0.3s !important;
         margin-right: 10px !important;
     `;
-    
+
     // Create settings button
     const settingsButton = document.createElement('button');
     settingsButton.textContent = 'Settings';
@@ -167,50 +216,50 @@ function displayBlockingMessage(message) {
         cursor: pointer !important;
         transition: background 0.3s !important;
     `;
-    
-    backButton.addEventListener('click', function() {
+
+    backButton.addEventListener('click', function () {
         if (window.history.length > 1) {
             window.history.back();
         } else {
             window.location.href = 'https://www.google.com';
         }
     });
-    
-    settingsButton.addEventListener('click', function() {
+
+    settingsButton.addEventListener('click', function () {
         chrome.runtime.openOptionsPage();
     });
-    
-    backButton.addEventListener('mouseenter', function() {
+
+    backButton.addEventListener('mouseenter', function () {
         this.style.background = '#5a67d8 !important';
     });
-    
-    backButton.addEventListener('mouseleave', function() {
+
+    backButton.addEventListener('mouseleave', function () {
         this.style.background = '#667eea !important';
     });
-    
-    settingsButton.addEventListener('mouseenter', function() {
+
+    settingsButton.addEventListener('mouseenter', function () {
         this.style.background = '#5a6268 !important';
     });
-    
-    settingsButton.addEventListener('mouseleave', function() {
+
+    settingsButton.addEventListener('mouseleave', function () {
         this.style.background = '#6c757d !important';
     });
-    
+
     // Create button container
     const buttonContainer = document.createElement('div');
     buttonContainer.appendChild(backButton);
     buttonContainer.appendChild(settingsButton);
-    
+
     // Assemble the message
     messageContainer.appendChild(icon);
     messageContainer.appendChild(messageText);
     messageContainer.appendChild(subtitle);
     messageContainer.appendChild(buttonContainer);
     overlay.appendChild(messageContainer);
-    
+
     // Add to page
     document.documentElement.appendChild(overlay);
-    
+
     // Prevent scrolling
     document.body.style.overflow = 'hidden';
 }
